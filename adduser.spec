@@ -5,8 +5,9 @@ Version:	1.06
 Release:	2
 License:	GPL
 Source0:	%{name}-%{version}.tar.gz
-Group:		Utilities/System
-Group(pl):	Narzêdzia/System
+Group:		Applications/System
+Group(de):	Applikationen/System
+Group(pl):	Aplikacje/System
 Requires:	bash >= 2.0
 Requires:	shadow
 Obsoletes:	etcskel
