@@ -1,7 +1,7 @@
 Summary:     Script for easy adding users
 Name:        adduser
-Version:     1.05
-Release:     1d
+Version:     1.06
+Release:     1
 Copyright:   GPL
 Source:      %{name}-%{version}.tar.gz
 Group:       Utilities/System
@@ -57,6 +57,10 @@ rm -rf $RPM_BUILD_ROOT
 %config %verify(not size mtime md5) /etc/default/public_html/*
 
 %changelog
+* Sun Mar 28 1999 Marek Obuchowicz <elephant@pld.org.pl>
+[1.06-1]
+- corrected some quota-setting errors
+
 * Fri Mar 2 1999 Marek Obuchowicz <elephant@shadow.eu.org>
 [1.04-1d]
 - international /etc/skel support
