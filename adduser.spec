@@ -2,7 +2,7 @@ Summary:	Script for easy adding users
 Summary(pl):	Skrypt do prostego dodawania u¿ytkowników
 Name:		adduser
 Version:	1.06
-Release:	2
+Release:	3
 License:	GPL
 Source0:	%{name}-%{version}.tar.gz
 Group:		Applications/System
@@ -55,15 +55,15 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %dir %{_sysconfdir}/adduser.d
 %attr(755,root,root) %dir /etc/skel/C
 %attr(755,root,root) %dir %lang(pl) /etc/skel/pl
-%attr(755,root,root) %dir %lang(en) /etc/skel/en
+%attr(755,root,root) %dir /etc/skel/en
 
 %config %verify(not size mtime md5) %{_sysconfdir}/default/adduser
 %config %verify(not size mtime md5) /etc/skel/C/*
 %config %verify(not size mtime md5) /etc/skel/C/.[a-zA-Z0-9]*
 #%config %verify(not size mtime md5) %lang(pl) /etc/skel/pl/*
 %config %verify(not size mtime md5) %lang(pl) /etc/skel/pl/.[a-zA-Z0-9]*
-#%config %verify(not size mtime md5) %lang(en) /etc/skel/en/*
-%config %verify(not size mtime md5) %lang(en) /etc/skel/en/.[a-zA-Z0-9]*
+#%config %verify(not size mtime md5) /etc/skel/en/*
+%config %verify(not size mtime md5) /etc/skel/en/.[a-zA-Z0-9]*
 %verify(not link) /etc/skel/default
 
 %dir %{_sysconfdir}/default/public_html
