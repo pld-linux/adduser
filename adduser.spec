@@ -11,7 +11,7 @@ Requires:	shadow
 Obsoletes:	etcskel
 Provides:	etcskel
 BuildArch:	noarch
-BuildRoot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Interactive shell script for easy adding new users to the system.
