@@ -4,14 +4,14 @@ Name:		adduser
 Version:	1.06
 Release:	3
 License:	GPL
+Group:		Applications/System
 Source0:	%{name}-%{version}.tar.gz
 # Source0-md5:	44fd89ee3b628806fc569473f5268c39
-Group:		Applications/System
+BuildRequires:	gettext-devel
 Requires:	bash >= 2.0
 Requires:	shadow
-BuildRequires:	gettext-devel
-Obsoletes:	etcskel
 Provides:	etcskel
+Obsoletes:	etcskel
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -30,7 +30,7 @@ u¿ytkowników.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_datadir}/locale/pl/LC_MESSAGES} \
-$RPM_BUILD_ROOT%{_sysconfdir}/{skel,adduser.d,default/public_html/{pl,en}}
+	$RPM_BUILD_ROOT%{_sysconfdir}/{skel,adduser.d,default/public_html/{pl,en}}
 
 install adduser $RPM_BUILD_ROOT%{_sbindir}
 install adduser.conf $RPM_BUILD_ROOT%{_sysconfdir}/default/adduser
@@ -53,19 +53,19 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_sbindir}/*
 
-%attr(755,root,root) %dir %{_sysconfdir}/adduser.d
-%attr(755,root,root) %dir /etc/skel/C
-%attr(755,root,root) %dir %lang(pl) /etc/skel/pl
-%attr(755,root,root) %dir /etc/skel/en
+%dir %{_sysconfdir}/adduser.d
+%dir /etc/skel/C
+%dir %lang(pl) /etc/skel/pl
+%dir /etc/skel/en
 
-%config %verify(not size mtime md5) %{_sysconfdir}/default/adduser
-%config %verify(not size mtime md5) /etc/skel/C/*
-%config %verify(not size mtime md5) /etc/skel/C/.[a-zA-Z0-9]*
-#%config %verify(not size mtime md5) %lang(pl) /etc/skel/pl/*
-%config %verify(not size mtime md5) %lang(pl) /etc/skel/pl/.[a-zA-Z0-9]*
-#%config %verify(not size mtime md5) /etc/skel/en/*
-%config %verify(not size mtime md5) /etc/skel/en/.[a-zA-Z0-9]*
-%verify(not link) /etc/skel/default
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/default/adduser
+%config(noreplace) %verify(not size mtime md5) /etc/skel/C/*
+%config(noreplace) %verify(not size mtime md5) /etc/skel/C/.[a-zA-Z0-9]*
+#%config(noreplace) %verify(not size mtime md5) %lang(pl) /etc/skel/pl/*
+%config(noreplace) %verify(not size mtime md5) %lang(pl) /etc/skel/pl/.[a-zA-Z0-9]*
+#%config(noreplace) %verify(not size mtime md5) /etc/skel/en/*
+%config(noreplace) %verify(not size mtime md5) /etc/skel/en/.[a-zA-Z0-9]*
+%config(noreplace) %verify(not link) /etc/skel/default
 
 %dir %{_sysconfdir}/default/public_html
-%config %verify(not size mtime md5) %{_sysconfdir}/default/public_html/*
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/default/public_html/*
