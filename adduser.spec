@@ -10,6 +10,7 @@ Group(de):	Applikationen/System
 Group(pl):	Aplikacje/System
 Requires:	bash >= 2.0
 Requires:	shadow
+BuildRequires:	gettext-devel
 Obsoletes:	etcskel
 Provides:	etcskel
 BuildArch:	noarch
