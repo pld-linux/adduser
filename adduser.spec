@@ -1,16 +1,16 @@
-Summary:     Script for easy adding users
-Summary(pl): Skrypt do prostego dodawania u¿ytkowników
-Name:        adduser
-Version:     1.06
-Release:     2
-Copyright:   GPL
-Source:      %{name}-%{version}.tar.gz
-Group:       Utilities/System
-Group(pl):   Narzêdzia/System
-Requires:    shadow
-Obsoletes:   etcskel
-Provides:    etcskel
-BuildArch:   noarch
+Summary:	Script for easy adding users
+Summary(pl):	Skrypt do prostego dodawania u¿ytkowników
+Name:		adduser
+Version:	1.06
+Release:	2
+Copyright:	GPL
+Source:		%{name}-%{version}.tar.gz
+Group:		Utilities/System
+Group(pl):	Narzêdzia/System
+Requires:	shadow
+Obsoletes:	etcskel
+Provides:	etcskel
+BuildArch:	noarch
 BuildRoot:	/tmp/%{name}-%{version}-root
 
 %description
@@ -23,11 +23,11 @@ do systemu. Pakiet zawiera pliki kopiowane do katalogów domowych
 nowych u¿ytkowników.
 
 %prep
-%setup -q -n %{name}
+%setup -q
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/usr/{sbin,share/locale/pl/LC_MESSAGES} \
+install -d $RPM_BUILD_ROOT{%{_sbindir},%{_datadir}/locale/pl/LC_MESSAGES} \
 	$RPM_BUILD_ROOT/etc/{skel,adduser.d,default/public_html/{pl,en}}
 
 install adduser $RPM_BUILD_ROOT%{_sbindir}
@@ -49,17 +49,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%attr(700,root,root) %{_sbindir}/*
+%attr(755,root,root) %{_sbindir}/*
 
-%attr(750,root,root) %dir /etc/adduser.d
-%attr(700,root,root) %dir /etc/skel/C
-%attr(700,root,root) %dir %lang(pl) /etc/skel/pl
-%attr(700,root,root) %dir %lang(en) /etc/skel/en
+%attr(755,root,root) %dir /etc/adduser.d
+%attr(755,root,root) %dir /etc/skel/C
+%attr(755,root,root) %dir %lang(pl) /etc/skel/pl
+%attr(755,root,root) %dir %lang(en) /etc/skel/en
 
-%attr(640,root,root) %config %verify(not size mtime md5) /etc/default/adduser
-%attr(600,root,root) %config %verify(not size mtime md5) /etc/skel/C/*
-%attr(600,root,root) %config %verify(not size mtime md5) %lang(pl) /etc/skel/pl/*
-%attr(600,root,root) %config %verify(not size mtime md5) %lang(en) /etc/skel/en/*
+%config %verify(not size mtime md5) /etc/default/adduser
+%config %verify(not size mtime md5) /etc/skel/C/*
+%config %verify(not size mtime md5) /etc/skel/C/.[a-zA-Z0-9]*
+#%config %verify(not size mtime md5) %lang(pl) /etc/skel/pl/*
+%config %verify(not size mtime md5) %lang(pl) /etc/skel/pl/.[a-zA-Z0-9]*
+#%config %verify(not size mtime md5) %lang(en) /etc/skel/en/*
+%config %verify(not size mtime md5) %lang(en) /etc/skel/en/.[a-zA-Z0-9]*
 %verify(not link) /etc/skel/default
 
 %dir /etc/default/public_html
