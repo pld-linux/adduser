@@ -1,6 +1,6 @@
 Summary:     Script for easy adding users
 Name:        adduser
-Version:     1.04
+Version:     1.05
 Release:     1d
 Copyright:   GPL
 Source:      %{name}-%{version}.tar.gz
