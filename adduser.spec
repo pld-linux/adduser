@@ -7,6 +7,7 @@ License:	GPL
 Source0:	%{name}-%{version}.tar.gz
 Group:		Utilities/System
 Group(pl):	Narzêdzia/System
+Requires:	bash >= 2.0
 Requires:	shadow
 Obsoletes:	etcskel
 Provides:	etcskel
