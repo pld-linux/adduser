@@ -5,6 +5,7 @@ Version:	1.06
 Release:	3
 License:	GPL
 Source0:	%{name}-%{version}.tar.gz
+# Source0-md5:	44fd89ee3b628806fc569473f5268c39
 Group:		Applications/System
 Requires:	bash >= 2.0
 Requires:	shadow
