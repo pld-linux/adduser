@@ -49,6 +49,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(700,root,root) /usr/sbin/*
 
+%lang(pl) /usr/share/locale/pl/LC_MESSAGES/adduser.mo
+
 %attr(750,root,root) %dir /etc/adduser.d
 %attr(700,root,root) %dir /etc/skel/C
 %attr(700,root,root) %dir %lang(pl) /etc/skel/pl
@@ -62,8 +64,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %dir /etc/default/public_html
 %config %verify(not size mtime md5) /etc/default/public_html/*
-
-%lang(pl) /usr/share/locale/pl/LC_MESSAGES/adduser.mo
 
 %changelog
 * Sun Mar 28 1999 Marek Obuchowicz <elephant@pld.org.pl>
