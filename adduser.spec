@@ -1,17 +1,17 @@
 Summary:     Script for easy adding users
+Summary(pl): Skrypt do prostego dodawania u¿ytkowników
 Name:        adduser
 Version:     1.06
 Release:     1
 Copyright:   GPL
 Source:      %{name}-%{version}.tar.gz
 Group:       Utilities/System
-Group(pl):   U¿ytki/System
-BuildRoot:   /var/tmp/%{name}-%{version}-%{release}-root
-BuildArch:   noarch
+Group(pl):   Narzêdzia/System
 Requires:    shadow
 Obsoletes:   etcskel
 Provides:    etcskel
-Summary(pl): Skrypt do prostego dodawania u¿ytkowników
+BuildArch:   noarch
+BuildRoot:   /tmp/%{name}-%{version}-root
 
 %description
 Interactive shell script for easy adding new users to the system.
@@ -23,15 +23,18 @@ do systemu. Pakiet zawiera pliki kopiowane do katalogów domowych
 nowych u¿ytkowników.
 
 %prep
-%setup -q 
+%setup -q -n %{name}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/{usr/sbin,etc/skel,etc/adduser.d,etc/default/public_html/{pl,en}}
-install -d $RPM_BUILD_ROOT/usr/share/locale/pl/LC_MESSAGES
+install -d $RPM_BUILD_ROOT/usr/{sbin,share/locale/pl/LC_MESSAGES} \
+	$RPM_BUILD_ROOT/etc/{skel,adduser.d,default/public_html/{pl,en}}
+
 install adduser $RPM_BUILD_ROOT/usr/sbin
 install adduser.conf $RPM_BUILD_ROOT/etc/default/adduser
+
 cp -R etcskel/. $RPM_BUILD_ROOT/etc/skel
+
 for lang in pl en; do
   cp -R etcskel/$lang/public_html/* $RPM_BUILD_ROOT/etc/default/public_html/$lang
   rm -rf $RPM_BUILD_ROOT/etc/skel/$lang/public_html
@@ -45,24 +48,28 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(700,root,root) /usr/sbin/*
-%lang(pl) /usr/share/locale/pl/LC_MESSAGES/adduser.mo
-%attr(750,root,root) %dir /etc/adduser.d
-%attr(640,root,root) %config %verify(not size mtime md5) /etc/default/adduser
 
+%attr(750,root,root) %dir /etc/adduser.d
 %attr(700,root,root) %dir /etc/skel/C
 %attr(700,root,root) %dir %lang(pl) /etc/skel/pl
 %attr(700,root,root) %dir %lang(en) /etc/skel/en
 
-%attr(600,root,root) %config %verify(not size mtime md5) /etc/skel/C/.[a-zA-Z0-9]*
-%attr(600,root,root) %config %verify(not size mtime md5) %lang(pl) /etc/skel/pl/.[a-zA-Z0-9]*
-%attr(600,root,root) %config %verify(not size mtime md5) %lang(en) /etc/skel/en/.[a-zA-Z0-9]*
-
+%attr(640,root,root) %config %verify(not size mtime md5) /etc/default/adduser
+%attr(600,root,root) %config %verify(not size mtime md5) /etc/skel/C/*
+%attr(600,root,root) %config %verify(not size mtime md5) %lang(pl) /etc/skel/pl/*
+%attr(600,root,root) %config %verify(not size mtime md5) %lang(en) /etc/skel/en/*
 %verify(not link) /etc/skel/default
 
 %dir /etc/default/public_html
 %config %verify(not size mtime md5) /etc/default/public_html/*
 
+%lang(pl) /usr/share/locale/pl/LC_MESSAGES/adduser.mo
+
 %changelog
+* Sun Mar 28 1999 Marek Obuchowicz <elephant@pld.org.pl>
+[1.06-1]
+- corrected some quota-setting errors
+
 * Fri Mar 2 1999 Marek Obuchowicz <elephant@shadow.eu.org>
 [1.04-1d]
 - international /etc/skel support
