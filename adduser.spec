@@ -40,7 +40,7 @@ for lang in pl en; do
   rm -rf $RPM_BUILD_ROOT/etc/skel/$lang/public_html
 done
 ln -sf en $RPM_BUILD_ROOT/etc/skel/default
-msgfmt po/pl.po -o $RPM_BUILD_ROOT/usr/share/locale/pl/LC_MESSAGES/adduser.mo
+msgfmt po/pl.po -o $RPM_BUILD_ROOT%{_datadir}/locale/pl/LC_MESSAGES/adduser.mo
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -49,7 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(700,root,root) /usr/sbin/*
 
-%lang(pl) /usr/share/locale/pl/LC_MESSAGES/adduser.mo
+%lang(pl) %{_datadir}/locale/pl/LC_MESSAGES/adduser.mo
 
 %attr(750,root,root) %dir /etc/adduser.d
 %attr(700,root,root) %dir /etc/skel/C
