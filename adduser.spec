@@ -30,7 +30,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/usr/{sbin,share/locale/pl/LC_MESSAGES} \
 	$RPM_BUILD_ROOT/etc/{skel,adduser.d,default/public_html/{pl,en}}
 
-install adduser $RPM_BUILD_ROOT/usr/sbin
+install adduser $RPM_BUILD_ROOT%{_sbindir}
 install adduser.conf $RPM_BUILD_ROOT/etc/default/adduser
 
 cp -R etcskel/. $RPM_BUILD_ROOT/etc/skel
@@ -47,7 +47,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%attr(700,root,root) /usr/sbin/*
+%attr(700,root,root) %{_sbindir}/*
 
 %lang(pl) %{_datadir}/locale/pl/LC_MESSAGES/adduser.mo
 
