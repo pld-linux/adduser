@@ -58,14 +58,14 @@ rm -rf $RPM_BUILD_ROOT
 %dir %lang(pl) /etc/skel/pl
 %dir /etc/skel/en
 
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/default/adduser
-%config(noreplace) %verify(not size mtime md5) /etc/skel/C/*
-%config(noreplace) %verify(not size mtime md5) /etc/skel/C/.[a-zA-Z0-9]*
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/default/adduser
+%config(noreplace) %verify(not md5 mtime size) /etc/skel/C/*
+%config(noreplace) %verify(not md5 mtime size) /etc/skel/C/.[a-zA-Z0-9]*
 #%config(noreplace) %verify(not size mtime md5) %lang(pl) /etc/skel/pl/*
-%config(noreplace) %verify(not size mtime md5) %lang(pl) /etc/skel/pl/.[a-zA-Z0-9]*
+%config(noreplace) %verify(not md5 mtime size) %lang(pl) /etc/skel/pl/.[a-zA-Z0-9]*
 #%config(noreplace) %verify(not size mtime md5) /etc/skel/en/*
-%config(noreplace) %verify(not size mtime md5) /etc/skel/en/.[a-zA-Z0-9]*
+%config(noreplace) %verify(not md5 mtime size) /etc/skel/en/.[a-zA-Z0-9]*
 %config(noreplace) %verify(not link) /etc/skel/default
 
 %dir %{_sysconfdir}/default/public_html
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/default/public_html/*
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/default/public_html/*
