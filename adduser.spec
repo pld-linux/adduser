@@ -1,5 +1,5 @@
 Summary:	Script for easy adding users
-Summary(pl):	Skrypt do prostego dodawania u¿ytkowników
+Summary(pl.UTF-8):   Skrypt do prostego dodawania uÅ¼ytkownikÃ³w
 Name:		adduser
 Version:	1.06
 Release:	3
@@ -19,10 +19,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Interactive shell script for easy adding new users to the system.
 Package contains files copied to new users home directories.
 
-%description -l pl
-Skrypt shella pozwalaj±cy interaktywnie dodawaæ nowych u¿ytkowników do
-systemu. Pakiet zawiera pliki kopiowane do katalogów domowych nowych
-u¿ytkowników.
+%description -l pl.UTF-8
+Skrypt shella pozwalajÄ…cy interaktywnie dodawaÄ‡ nowych uÅ¼ytkownikÃ³w do
+systemu. Pakiet zawiera pliki kopiowane do katalogÃ³w domowych nowych
+uÅ¼ytkownikÃ³w.
 
 %prep
 %setup -q
