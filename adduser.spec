@@ -1,5 +1,5 @@
 Summary:	Script for easy adding users
-Summary(pl.UTF-8):   Skrypt do prostego dodawania użytkowników
+Summary(pl.UTF-8):	Skrypt do prostego dodawania użytkowników
 Name:		adduser
 Version:	1.06
 Release:	3
