@@ -1,12 +1,15 @@
+# TODO:
+# - finish it...
 Summary:	Script for easy adding users
 Summary(pl.UTF-8):	Skrypt do prostego dodawania użytkowników
 Name:		adduser
-Version:	1.06
-Release:	3
-License:	GPL
+Version:	3.110
+Release:	0.1
+License:	GPL v2
 Group:		Applications/System
-Source0:	%{name}-%{version}.tar.gz
-# Source0-md5:	44fd89ee3b628806fc569473f5268c39
+Source0:	http://ftp.de.debian.org/debian/pool/main/a/adduser/%{name}_%{version}.tar.gz
+# Source0-md5:	826832470e042eedeff7219071c40743
+URL:		http://alioth.debian.org/projects/adduser/
 BuildRequires:	gettext-devel
 Requires:	bash >= 2.0
 Requires:	shadow
@@ -25,7 +28,7 @@ systemu. Pakiet zawiera pliki kopiowane do katalogów domowych nowych
 użytkowników.
 
 %prep
-%setup -q
+%setup -q -n trunk
 
 %install
 rm -rf $RPM_BUILD_ROOT
