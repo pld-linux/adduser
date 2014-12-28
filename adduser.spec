@@ -10,7 +10,7 @@ Group:		Applications/System
 Source0:	ftp://ftp.debian.org/debian/pool/main/a/adduser/%{name}_%{version}.tar.gz
 # Source0-md5:	826832470e042eedeff7219071c40743
 URL:		http://alioth.debian.org/projects/adduser/
-BuildRequires:	gettext-devel
+BuildRequires:	gettext-tools
 Requires:	bash >= 2.0
 Requires:	shadow
 Provides:	etcskel
