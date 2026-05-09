@@ -3,18 +3,22 @@
 Summary:	Script for easy adding users
 Summary(pl.UTF-8):	Skrypt do prostego dodawania użytkowników
 Name:		adduser
-Version:	3.110
+Version:	3.155
 Release:	0.1
-License:	GPL v2
+License:	GPL v2+
 Group:		Applications/System
-Source0:	http://ftp.debian.org/debian/pool/main/a/adduser/%{name}_%{version}.tar.gz
-# Source0-md5:	826832470e042eedeff7219071c40743
-URL:		http://alioth.debian.org/projects/adduser/
+Source0:	http://deb.debian.org/debian/pool/main/a/adduser/%{name}_%{version}.tar.xz
+# Source0-md5:	36b52de8f2b4aea2266a709c573cf843
+Patch0:		%{name}-po.patch
+URL:		https://salsa.debian.org/debian/adduser
 BuildRequires:	gettext-tools
+BuildRequires:	po4a
+BuildRequires:	rpm-perlprov
+BuildRequires:	rpmbuild(macros) >= 1.745
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 Requires:	bash >= 2.0
 Requires:	shadow
-Provides:	etcskel
-Obsoletes:	etcskel
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -28,24 +32,62 @@ systemu. Pakiet zawiera pliki kopiowane do katalogów domowych nowych
 użytkowników.
 
 %prep
-%setup -q -n trunk
+%setup -q -c
+%patch -P0 -p0
+
+%build
+# see debian/rules
+install -d build
+for f in adduser deluser ; do
+	%{__sed} -e 's/DVERSION/%{version}/' "work/$f" > "build/$f"
+done
+for f in work/*.pm ; do
+	%{__sed} -e 's/DVERSION/%{version}/' "$f" > "build/$(basename "$f")"
+done
+
+for f in work/po/*.po ; do msgfmt -c -v -o "build/$(basename "$f" .po).mo" "$f" ; done
+
+install -d build/po4a
+po4a --keep 60 --previous work/doc/po4a/po4a.conf --destdir build/po4a --srcdir work/doc/po4a
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sbindir},%{_datadir}/locale/pl/LC_MESSAGES} \
-	$RPM_BUILD_ROOT%{_sysconfdir}/{skel,adduser.d,default/public_html/{pl,en}}
+install -d $RPM_BUILD_ROOT{%{_sbindir},%{_sysconfdir},%{_mandir}/man{5,8},%{perl_vendorlib}/Debian,/var/cache/adduser}
 
-install adduser $RPM_BUILD_ROOT%{_sbindir}
-install adduser.conf $RPM_BUILD_ROOT%{_sysconfdir}/default/adduser
+install build/{adduser,deluser} $RPM_BUILD_ROOT%{_sbindir}
+ln -sf adduser $RPM_BUILD_ROOT%{_sbindir}/addgroup
+ln -sf deluser $RPM_BUILD_ROOT%{_sbindir}/delgroup
+cp -p build/*.pm $RPM_BUILD_ROOT%{perl_vendorlib}/Debian
 
-cp -R etcskel/. $RPM_BUILD_ROOT/etc/skel
-
-for lang in pl en; do
-cp -R etcskel/$lang/public_html/* $RPM_BUILD_ROOT%{_sysconfdir}/default/public_html/$lang
-  rm -rf $RPM_BUILD_ROOT/etc/skel/$lang/public_html
+for f in build/*.mo ; do
+	lang="$(basename "$f" .mo)"
+	install -d $RPM_BUILD_ROOT%{_localedir}/${lang}/LC_MESSAGES
+	cp -p "$f" $RPM_BUILD_ROOT%{_localedir}/${lang}/LC_MESSAGES/adduser.mo
 done
-ln -sf en $RPM_BUILD_ROOT/etc/skel/default
-msgfmt po/pl.po -o $RPM_BUILD_ROOT%{_datadir}/locale/pl/LC_MESSAGES/adduser.mo
+
+cp -p work/{adduser,deluser}.conf $RPM_BUILD_ROOT%{_sysconfdir}
+cp -p work/doc/*.5 $RPM_BUILD_ROOT%{_mandir}/man5
+cp -p work/doc/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+echo '.so adduser.8' >$RPM_BUILD_ROOT%{_mandir}/man8/addgroup.8
+echo '.so deluser.8' >$RPM_BUILD_ROOT%{_mandir}/man8/delgroup.8
+for f in build/*.[58] ; do
+	bn=$(basename "$f")
+	sect=$(echo "$bn" | sed -e 's/.*\.\([0-9]\)$/\1/')
+	bn=$(basename "$bn" .${sect})
+	lang=$(echo "$bn" | sed -e 's/.*\.\([a-zA-Z_]\+\)$/\1/')
+	bn=$(basename "$bn" .${lang})
+	install -d $RPM_BUILD_ROOT%{_mandir}/${lang}/man${sect}
+	cp -p "$f" $RPM_BUILD_ROOT%{_mandir}/${lang}/man${sect}/${bn}.${sect}
+	if [ "$bn" = "adduser" ]; then
+		echo ".so adduser.8" >$RPM_BUILD_ROOT%{_mandir}/${lang}/man${sect}/addgroup.${sect}
+	elif [ "$bn" = "deluser" ]; then
+		echo ".so deluser.8" >$RPM_BUILD_ROOT%{_mandir}/${lang}/man${sect}/delgroup.${sect}
+	fi
+done
+
+# tool not packaged
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/adduser.local.8
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/*/man8/adduser.local.8
 
 %find_lang %{name}
 
@@ -54,21 +96,41 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_sbindir}/*
+%doc work/debian/{NEWS,README,TODO,changelog,copyright}
+%attr(755,root,root) %{_sbindir}/addgroup
+%attr(755,root,root) %{_sbindir}/adduser
+%attr(755,root,root) %{_sbindir}/delgroup
+%attr(755,root,root) %{_sbindir}/deluser
 
-%dir %{_sysconfdir}/adduser.d
-%dir /etc/skel/C
-%dir %lang(pl) /etc/skel/pl
-%dir /etc/skel/en
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/adduser.conf
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/deluser.conf
+%dir /var/cache/adduser
 
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/default/adduser
-%config(noreplace) %verify(not md5 mtime size) /etc/skel/C/*
-%config(noreplace) %verify(not md5 mtime size) /etc/skel/C/.[a-zA-Z0-9]*
-#%config(noreplace) %verify(not size mtime md5) %lang(pl) /etc/skel/pl/*
-%config(noreplace) %verify(not md5 mtime size) %lang(pl) /etc/skel/pl/.[a-zA-Z0-9]*
-#%config(noreplace) %verify(not size mtime md5) /etc/skel/en/*
-%config(noreplace) %verify(not md5 mtime size) /etc/skel/en/.[a-zA-Z0-9]*
-%config(noreplace) %verify(not link) /etc/skel/default
+%dir %{perl_vendorlib}/Debian
+%{perl_vendorlib}/Debian/Adduser*.pm
 
-%dir %{_sysconfdir}/default/public_html
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/default/public_html/*
+%{_mandir}/man5/adduser.conf.5*
+%{_mandir}/man5/deluser.conf.5*
+%{_mandir}/man8/addgroup.8*
+%{_mandir}/man8/adduser.8*
+%{_mandir}/man8/delgroup.8*
+%{_mandir}/man8/deluser.8*
+%lang(da) %{_mandir}/da/man5/*.conf.5*
+%lang(de) %{_mandir}/de/man5/*.conf.5*
+%lang(es) %{_mandir}/es/man5/*.conf.5*
+%lang(fr) %{_mandir}/fr/man5/*.conf.5*
+%lang(it) %{_mandir}/it/man5/*.conf.5*
+%lang(nl) %{_mandir}/nl/man5/*.conf.5*
+%lang(pl) %{_mandir}/pl/man5/*.conf.5*
+%lang(pt) %{_mandir}/pt/man5/*.conf.5*
+%lang(pt_BR) %{_mandir}/pt_BR/man5/*.conf.5*
+%lang(ro) %{_mandir}/ro/man5/*.conf.5*
+%lang(ru) %{_mandir}/ru/man5/*.conf.5*
+%lang(sv) %{_mandir}/sv/man5/*.conf.5*
+%lang(de) %{_mandir}/de/man8/*.8*
+%lang(fr) %{_mandir}/fr/man8/*.8*
+%lang(nl) %{_mandir}/nl/man8/*.8*
+%lang(pt) %{_mandir}/pt/man8/*.8*
+%lang(pt_BR) %{_mandir}/pt_BR/man8/*.8*
+%lang(ro) %{_mandir}/ro/man8/*.8*
+%lang(sv) %{_mandir}/sv/man8/*.8*

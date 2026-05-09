@@ -1,0 +1,11 @@
+--- work/po/de.po.orig	2026-05-09 19:41:41.498935403 +0200
++++ work/po/de.po	2026-05-09 19:42:24.688701424 +0200
+@@ -245,7 +245,7 @@ msgstr "Lege neue Gruppe »%s« (%d) an
+ #: adduser:885
+ #, perl-format
+ msgid "Adding new group `%s' (new group ID) ..."
+-msgstr "Lege neue Gruppe »%s« (neue Gruppenkennung %d) an …"
++msgstr "Lege neue Gruppe »%s« (neue Gruppenkennung) an …"
+ 
+ #: adduser:888
+ #, perl-format
