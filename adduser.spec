@@ -3,12 +3,12 @@
 Summary:	Script for easy adding users
 Summary(pl.UTF-8):	Skrypt do prostego dodawania użytkowników
 Name:		adduser
-Version:	3.155
+Version:	3.156
 Release:	0.1
 License:	GPL v2+
 Group:		Applications/System
 Source0:	http://deb.debian.org/debian/pool/main/a/adduser/%{name}_%{version}.tar.xz
-# Source0-md5:	36b52de8f2b4aea2266a709c573cf843
+# Source0-md5:	1f7c7f194f080f6ee18af157cf5ac413
 Patch0:		%{name}-po.patch
 URL:		https://salsa.debian.org/debian/adduser
 BuildRequires:	gettext-tools
